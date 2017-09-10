@@ -32,7 +32,7 @@
 			  	
 			  	<div class="columns col-steps is-mobile">
 			  		<div class="column step">
-			  			<div class="round round-1" :class="{active : active_one}">1</div> <h3 :class="{active : active_one}">Follow</h3>
+			  			<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}">Follow</h3>
 			  		</div>
 			  		<div class="column step">
 			  			<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}">Information</h3>
@@ -43,23 +43,24 @@
 			  	</div>
 
 			  	<div class="step-1 top20" v-if="step_one">
-			  		<button class="button is-spotify" v-show="!authorized" @click="getAuth()">Login to Spotify and Follow us <i class="fa fa-spotify"></i></button>
+			  		<button class="button is-spotify" v-show="!authorized" @click="getAuth()">Login to Spotify to Follow us <i class="fa fa-spotify"></i></button>
+			  		<p class="help-text" v-show="!authorized">You have to follow the TrapWolves playlist in order to enter the giveaway</p>
 
-			  		<button class="button is-spotify" v-show="authorized" @click="follow()">Follow playlist <i class="fa fa-spotify"></i></button>
-			  		<p class="help-text" v-show="authorized">You have to follow the TrapWolves playlist to enter the giveaway</p>
+<!-- 			  		<button class="button is-spotify" v-show="authorized" @click="follow()">Follow playlist <i class="fa fa-spotify"></i></button> -->
+			  		
 			  	</div>
 
 			  	<div class="step-2 top20" v-if="step_two">
 
-					<form>
+					<form v-on:submit.prevent="onSubmit">
 						<div class="field">
 						  <div class="control">
-						    <input class="input" type="text" name="name" placeholder="First name">
+						    <input class="input" type="text" name="name" placeholder="Your name" v-model="name">
 						  </div>
 						</div>					
 						<div class="field">
 						  <div class="control">
-						    <input class="input" type="email" name="email" placeholder="E-mailadress">
+						    <input class="input" type="email" name="email" placeholder="E-mailadress" v-model="emailadress">
 						  </div>
 						</div>
 					</form>
@@ -95,6 +96,8 @@
 <script>
 
 import axios from 'axios'
+import firebase from 'firebase'
+import config from './../firebase.js' //firebase auth settings
 
 export default {
 	name: 'Welcome',
@@ -123,7 +126,13 @@ data() {
 
 			step_one: true,
 			step_two: false,
-			step_three: false
+			step_three: false,
+
+			name: '',
+			emailadress: '',
+
+			array: [],
+			checkEmail: ''
 
 		}
 	},
@@ -203,6 +212,8 @@ data() {
 
     			app.active_two = true;
     			app.step_two = true;
+    		} else {
+    			app.follow();
     		}
 
     	}) // end of then first response
@@ -229,14 +240,6 @@ data() {
 				   })    	
     },
 
-    checkForm() {
-    	    	this.step_two = false;
-    			this.active_two = false;
-
-    			this.active_three = true;
-    			this.step_three = true;
-    },
-
     getAuth() {
     		let app = this;
 
@@ -246,6 +249,60 @@ data() {
           		app.display = true;
           		app.getUserData(accessToken);
             });
+    },
+
+    checkForm() {
+
+    		let app = this;
+
+    		if (this.name == '' || this.emailadress == '') {
+    			alert('You have to fill out the form');
+    		} else {
+
+    			app.getFirebase();
+
+    		}
+    },
+
+    getFirebase() {
+
+    		let app = this;
+
+    	    var ref = firebase.database().ref().child('/aanmeldingen/');
+		    ref.once('value', function(snapshot) {
+
+		        snapshot.forEach(function(childSnapshot) {
+		           app.checkEmail = childSnapshot.val().email;
+		           app.array.push(app.checkEmail);
+		        });
+
+		        	const res = app.array.includes(app.emailadress);
+			        console.log(app.array);
+			        console.log(res);
+
+		          if(res) {
+		            alert('You already have entered the giveaway');
+		          } else if (res == false) {
+
+		          	app.store();
+
+		          }
+		    });
+    },
+
+    store() {
+    			    this.step_two = false;
+	    			this.active_two = false;
+
+	    			this.active_three = true;
+	    			this.step_three = true;
+
+	    			let app = this;
+
+		            firebase.database().ref('/aanmeldingen/').push({
+		            username: app.name,
+		            email: app.emailadress,
+		          	});
     }
 
 	} // end of methods
@@ -263,15 +320,14 @@ data() {
     		color: #dadada;
 
 			.round {
-				display: inline;
-
-				border-radius: 50%;
-				background-color: transparant;	
-				font-size: 16px;
-    			padding: 5px 7px 5px 7px;
-			    color: #dadada;
-    			border: 2px solid #dadada;
-			    margin-right: 10px;
+					display: inline;
+				    border-radius: 100%;
+				    background-color: transparant;
+				    font-size: 16px;
+				    padding: 5px 9px 5px 9px;
+				    color: #dadada;
+				    border: 2px solid #dadada;
+				    margin-right: 10px;
 			}
 
 			.round.active {
