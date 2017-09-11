@@ -1,6 +1,6 @@
 {
-  "name": "bmi",
-  "description": "A Vue.js project (SPA with Bulma, Font-awesome, SCSS)",
+  "name": "trapwolves_spotify_gate",
+  "description": "A Vue.js project with the Spotify API and Firebase",
   "version": "1.0.0",
   "author": "Glenn Gijsberts",
   "private": true,
