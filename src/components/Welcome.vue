@@ -120,7 +120,7 @@ data() {
 			follows: false,
 
 			client_id: '3f6be5c8306741c8ab06713da0a92f59',
-			redirect: 'http://localhost:8080/#/callback',
+			redirect: 'http://freespotifypromotion.com/#/callback',
 
 			profile_id: '',
 
@@ -184,7 +184,6 @@ data() {
                'Authorization': 'Bearer ' + accessToken
             }
     	}).then(function(response) {
-    		console.log(response);
     		app.profile_id = response.data.id;
     		app.followsPlaylist();
     	})
@@ -202,8 +201,6 @@ data() {
     		}
 
     	}).then(function(response) {
-
-    		console.log(response);
 
     		if(response.data["0"] == true) {
     			app.follows = true;
@@ -230,7 +227,6 @@ data() {
 				    'Content-Type': 'application/json'
 				    }
 					}).then(function(response) {	
-				    	console.log(response);
 		    			app.follows = true;
 		    			app.step_one = false;
 		    			app.active_one = false;
@@ -277,8 +273,6 @@ data() {
 		        });
 
 		        	const res = app.array.includes(app.emailadress);
-			        console.log(app.array);
-			        console.log(res);
 
 		          if(res) {
 		            alert('You already have entered the giveaway');
@@ -310,6 +304,111 @@ data() {
 </script>
 
 <style lang="scss" scoped>
+
+//SCSS
+html {
+	font-size: 16px;
+}
+
+ body {
+ 	font-family: 'Ubuntu', sans-serif;
+ }
+
+ 	$brand-color: #40D2A4;
+	$trapwolves: #40D2A4;
+
+	.welcome {
+
+		text-align: center;
+
+		h1.title {
+			font-size: 3rem;
+			font-family: 'Bignoodle', sans-serif;
+			color: $trapwolves;
+			margin-bottom: 20px;
+			font-weight: normal;
+		}
+
+		h2.subtitle {
+			font-size: 2rem;
+			font-family: 'Bignoodle', sans-serif;
+			color: black;
+			font-weight: normal;
+		}
+
+		.image-logo {
+			max-width: 100px;
+			margin: 0 auto;
+			margin-bottom: 20px;
+		}
+
+	}
+
+	.shirts {
+		margin-top: -70px;
+		position: relative;
+
+		.image-shirts {
+			max-width: 500px;
+			margin: 0 auto;
+		}
+
+		.arrow-left {
+			position: absolute;
+		    top: 125px;
+		    max-width: 75px;
+		    left: 0px;
+		}
+
+		.arrow-right {
+			position: absolute;
+		    top: 125px;
+		    max-width: 75px;
+		    right: 0px;
+		}
+
+	}
+
+	@media screen and (max-width: 768px) {
+		.image-shirts {
+			max-width: 300px !important;
+			margin: 0 auto;
+		}
+
+		.arrow-left, .arrow-right {
+			display: none !important;
+		}
+
+	}
+
+	.is-spotify {
+		background-color: $brand-color;
+		color: white;
+		border: 1px solid $brand-color;
+
+		.fa-spotify {
+			padding-left: 10px;
+		}
+		&:hover, &:active, &:focus {
+			color: white;
+			border: 1px solid $brand-color;
+		}
+	}
+
+	.display {
+		display: none;
+	}
+
+
+	 $brand-color: #1db954;
+
+	 .top20 {
+	 	margin-top: 20px;
+	 }
+
+	 .input:focus, .input.is-focused, .input:active, .input.is-active, .textarea:focus, .textarea.is-focused, .textarea:active, .textarea.is-active {
+	    border-color: $brand-color;
+	}
 
 	.giveaway-steps {
 		margin-top: 10px;
