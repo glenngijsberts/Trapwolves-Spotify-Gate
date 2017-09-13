@@ -32,13 +32,13 @@
 			  	
 			  	<div class="columns col-steps is-mobile">
 			  		<div class="column step">
-			  			<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}">Follow</h3>
+			  			<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}"><span class="showSM"><br /></span>Follow</h3>
 			  		</div>
 			  		<div class="column step">
-			  			<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}">Information</h3>
+			  			<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}"><span class="showSM"><br /></span>Information</h3>
 			  		</div>
 			  		<div class="column step">
-			  			<div class="round round-3" :class="{active : active_three}">3</div> <h3 :class="{active : active_three}">Complete</h3>
+			  			<div class="round round-3" :class="{active : active_three}">3</div> <h3 :class="{active : active_three}"><span class="showSM"><br /></span>Complete</h3>
 			  		</div>
 			  	</div>
 
@@ -304,7 +304,8 @@ data() {
 </script>
 
 <style lang="scss" scoped>
-//SCSS
+
+
 html {
 	font-size: 16px;
 }
@@ -312,6 +313,14 @@ html {
  body {
  	font-family: 'Ubuntu', sans-serif;
  }
+
+ .hero-body {
+ 	padding: 1.5rem;
+ }
+
+ .section {
+    padding: 0.5rem 1.5rem;
+}
 
  	$brand-color: #40D2A4;
 	$trapwolves: #40D2A4;
@@ -391,7 +400,7 @@ html {
 		&:hover, &:active, &:focus {
 			color: white;
 			border: 1px solid $brand-color;
-            background:red
+            background-color: darken($brand-color, 10%);
 		}
 	}
 
@@ -538,6 +547,28 @@ html {
 				}
 			}
 
+		}
+	}
+	.showSM {
+		display: none;
+	}
+	@media screen and (max-width: 480px) {
+		.showSM {
+			display: block;
+			margin-bottom: -20px;
+		}
+
+		.giveaway-steps .round {
+			margin-right: 0px !important;
+			margin-bottom: 0px !important; 
+		}
+
+		.giveaway-steps .step h3 {
+			margin-top: 0px !important;
+		}
+
+		.column.step {
+			padding: 1rem .75rem 0.75rem 0.75rem;
 		}
 
 	}
