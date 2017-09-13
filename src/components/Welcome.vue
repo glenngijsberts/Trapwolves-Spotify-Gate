@@ -120,7 +120,7 @@ data() {
 			follows: false,
 
 			client_id: '3f6be5c8306741c8ab06713da0a92f59',
-			redirect: 'http://freespotifypromotion.com/#/callback',
+			redirect: 'http://trapwolves.com/Giveaway/#/callback',
 
 			profile_id: '',
 
@@ -272,7 +272,7 @@ data() {
 		           app.array.push(app.checkEmail);
 		        });
 
-		        	const res = app.array.includes(app.emailadress);
+		        	const res = app.array.includes(app.emailadress);gi
 
 		          if(res) {
 		            alert('You already have entered the giveaway');
@@ -304,7 +304,6 @@ data() {
 </script>
 
 <style lang="scss" scoped>
-
 //SCSS
 html {
 	font-size: 16px;
@@ -325,7 +324,7 @@ html {
 			font-size: 3rem;
 			font-family: 'Bignoodle', sans-serif;
 			color: $trapwolves;
-			margin-bottom: 20px;
+			margin-bottom: 12px;
 			font-weight: normal;
 		}
 
@@ -337,19 +336,19 @@ html {
 		}
 
 		.image-logo {
-			max-width: 100px;
+			max-width: 70px;
 			margin: 0 auto;
-			margin-bottom: 20px;
+			margin-bottom: 10px;
 		}
 
 	}
 
 	.shirts {
-		margin-top: -70px;
+		margin-top: -30px;
 		position: relative;
 
 		.image-shirts {
-			max-width: 500px;
+			max-width: 450px;
 			margin: 0 auto;
 		}
 
@@ -392,6 +391,7 @@ html {
 		&:hover, &:active, &:focus {
 			color: white;
 			border: 1px solid $brand-color;
+            background:red
 		}
 	}
 
@@ -538,7 +538,7 @@ html {
 				}
 			}
 
-		}	
+		}
 
 	}
 	

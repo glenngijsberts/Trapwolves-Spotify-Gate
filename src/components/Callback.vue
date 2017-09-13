@@ -17,7 +17,7 @@
       type:'access_token',
       access_token: hash.access_token,
       expires_in: hash.expires_in || 0
-    }), 'http://freespotifypromotion.com/#/');
+    }), 'http://trapwolves.com/Giveaway/#/');
     window.close();
     }
 })();
