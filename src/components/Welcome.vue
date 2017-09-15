@@ -272,7 +272,7 @@ data() {
 		           app.array.push(app.checkEmail);
 		        });
 
-		        	const res = app.array.includes(app.emailadress);gi
+		        	const res = app.array.includes(app.emailadress);
 
 		          if(res) {
 		            alert('You already have entered the giveaway');
