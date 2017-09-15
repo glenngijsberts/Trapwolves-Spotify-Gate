@@ -18,6 +18,8 @@
       access_token: hash.access_token,
       expires_in: hash.expires_in || 0
     }), 'http://trapwolves.com/Giveaway/#/');
+    //}), 'http://localhost:8888/Trapwolves/Trapwolves/#/');
+    //}), 'http://localhost:8080/#/');
     window.close();
     }
 })();

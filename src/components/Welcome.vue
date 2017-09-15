@@ -71,7 +71,7 @@
 
 			  	<div class="step-3 top20" v-if="step_three">
 			  		<p class="help-text">Thankyou for entering this giveaway!</p>
-			  		<p class="sub-text">The winner will be anounched by e-mail on 22-08-2017</p>
+			  		<p class="sub-text">The winner will be anounched by e-mail on 22-09-2017</p>
 
 			  		<div class="social-icons">
 			  			<a href="https://www.facebook.com/TrapWolves/" title="Facebook Trapwolves"><i class="fa fa-facebook-official"></i></a>
@@ -121,6 +121,8 @@ data() {
 
 			client_id: '3f6be5c8306741c8ab06713da0a92f59',
 			redirect: 'http://trapwolves.com/Giveaway/#/callback',
+			//redirect: 'http://localhost:8888/Trapwolves/Trapwolves/#/callback',
+			//redirect: 'http://localhost:8080/#/callback',
 
 			profile_id: '',
 
