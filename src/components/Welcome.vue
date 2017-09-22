@@ -32,22 +32,19 @@
 			  	
 			  	<div class="columns col-steps is-mobile">
 			  		<div class="column step">
-			  			<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}">Follow</h3>
+			  			<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}"><span class="showSM"><br /></span>Follow</h3>
 			  		</div>
 			  		<div class="column step">
-			  			<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}">Information</h3>
+			  			<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}"><span class="showSM"><br /></span>Information</h3>
 			  		</div>
 			  		<div class="column step">
-			  			<div class="round round-3" :class="{active : active_three}">3</div> <h3 :class="{active : active_three}">Complete</h3>
+			  			<div class="round round-3" :class="{active : active_three}">3</div> <h3 :class="{active : active_three}"><span class="showSM"><br /></span>Complete</h3>
 			  		</div>
 			  	</div>
 
 			  	<div class="step-1 top20" v-if="step_one">
 			  		<button class="button is-spotify" v-show="!authorized" @click="getAuth()">Login to Spotify to Follow us <i class="fa fa-spotify"></i></button>
 			  		<p class="help-text" v-show="!authorized">You have to follow the TrapWolves playlist in order to enter the giveaway</p>
-
-<!-- 			  		<button class="button is-spotify" v-show="authorized" @click="follow()">Follow playlist <i class="fa fa-spotify"></i></button> -->
-			  		
 			  	</div>
 
 			  	<div class="step-2 top20" v-if="step_two">
@@ -71,7 +68,7 @@
 
 			  	<div class="step-3 top20" v-if="step_three">
 			  		<p class="help-text">Thankyou for entering this giveaway!</p>
-			  		<p class="sub-text">The winner will be anounched by e-mail on 22-08-2017</p>
+			  		<p class="sub-text">The winner will be anounched by e-mail on 22-09-2017</p>
 
 			  		<div class="social-icons">
 			  			<a href="https://www.facebook.com/TrapWolves/" title="Facebook Trapwolves"><i class="fa fa-facebook-official"></i></a>
@@ -105,32 +102,42 @@ export default {
 	},
 data() {
 		return {
-
+			//Check for authorized
 			authorized: false,
 			display: false,
 
+			//Steps
 			active_one: true,
 			active_two: false,
 			active_three: false,
 
+			//accessToken from login spotify API
 			accessToken: '',
 
+			//List id from Spotify playlist
 			list: '71z8xZqacq06KVQ2Nir9H6',
+			//Owner of the playlist
 			owner: 'trapwolvesofficial',
+			//Check for following the playlist
 			follows: false,
 
+			//Client_id from spotify APP
 			client_id: '3f6be5c8306741c8ab06713da0a92f59',
-			redirect: 'http://localhost:8080/#/callback',
+			//Redirect callback link
+			redirect: 'http://trapwolves.com/Giveaway/#/callback',
 
+			//Profile_id from spotify API response
 			profile_id: '',
 
+			//Managing which step you are one and which HTML will be showing
 			step_one: true,
 			step_two: false,
 			step_three: false,
 
+			//Name and Email for Firebase storing
 			name: '',
 			emailadress: '',
-
+			//Storing the data from firebase to check if the email is already entered
 			array: [],
 			checkEmail: ''
 
@@ -139,6 +146,7 @@ data() {
 
 	methods: {
 
+		//Login to spotify function
 		login(callback) {
 
 			let app = this;
@@ -175,6 +183,7 @@ data() {
         
     },
 
+    //
     getUserData(accessToken) {
     	let app = this;
     	axios({
@@ -184,7 +193,6 @@ data() {
                'Authorization': 'Bearer ' + accessToken
             }
     	}).then(function(response) {
-    		console.log(response);
     		app.profile_id = response.data.id;
     		app.followsPlaylist();
     	})
@@ -202,8 +210,6 @@ data() {
     		}
 
     	}).then(function(response) {
-
-    		console.log(response);
 
     		if(response.data["0"] == true) {
     			app.follows = true;
@@ -230,7 +236,6 @@ data() {
 				    'Content-Type': 'application/json'
 				    }
 					}).then(function(response) {	
-				    	console.log(response);
 		    			app.follows = true;
 		    			app.step_one = false;
 		    			app.active_one = false;
@@ -277,8 +282,6 @@ data() {
 		        });
 
 		        	const res = app.array.includes(app.emailadress);
-			        console.log(app.array);
-			        console.log(res);
 
 		          if(res) {
 		            alert('You already have entered the giveaway');
@@ -310,6 +313,120 @@ data() {
 </script>
 
 <style lang="scss" scoped>
+
+
+html {
+	font-size: 16px;
+}
+
+ body {
+ 	font-family: 'Ubuntu', sans-serif;
+ }
+
+ .hero-body {
+ 	padding: 1.5rem;
+ }
+
+ .section {
+    padding: 0.5rem 1.5rem;
+}
+
+ 	$brand-color: #40D2A4;
+	$trapwolves: #40D2A4;
+
+	.welcome {
+
+		text-align: center;
+
+		h1.title {
+			font-size: 3rem;
+			font-family: 'Bignoodle', sans-serif;
+			color: $trapwolves;
+			margin-bottom: 12px;
+			font-weight: normal;
+		}
+
+		h2.subtitle {
+			font-size: 2rem;
+			font-family: 'Bignoodle', sans-serif;
+			color: black;
+			font-weight: normal;
+		}
+
+		.image-logo {
+			max-width: 70px;
+			margin: 0 auto;
+			margin-bottom: 10px;
+		}
+
+	}
+
+	.shirts {
+		margin-top: -30px;
+		position: relative;
+
+		.image-shirts {
+			max-width: 450px;
+			margin: 0 auto;
+		}
+
+		.arrow-left {
+			position: absolute;
+		    top: 125px;
+		    max-width: 75px;
+		    left: 0px;
+		}
+
+		.arrow-right {
+			position: absolute;
+		    top: 125px;
+		    max-width: 75px;
+		    right: 0px;
+		}
+
+	}
+
+	@media screen and (max-width: 768px) {
+		.image-shirts {
+			max-width: 300px !important;
+			margin: 0 auto;
+		}
+
+		.arrow-left, .arrow-right {
+			display: none !important;
+		}
+
+	}
+
+	.is-spotify {
+		background-color: $brand-color;
+		color: white;
+		border: 1px solid $brand-color;
+
+		.fa-spotify {
+			padding-left: 10px;
+		}
+		&:hover, &:active, &:focus {
+			color: white;
+			border: 1px solid $brand-color;
+            background-color: darken($brand-color, 10%);
+		}
+	}
+
+	.display {
+		display: none;
+	}
+
+
+	 $brand-color: #1db954;
+
+	 .top20 {
+	 	margin-top: 20px;
+	 }
+
+	 .input:focus, .input.is-focused, .input:active, .input.is-active, .textarea:focus, .textarea.is-focused, .textarea:active, .textarea.is-active {
+	    border-color: $brand-color;
+	}
 
 	.giveaway-steps {
 		margin-top: 10px;
@@ -439,7 +556,29 @@ data() {
 				}
 			}
 
-		}	
+		}
+	}
+	.showSM {
+		display: none;
+	}
+	@media screen and (max-width: 480px) {
+		.showSM {
+			display: block;
+			margin-bottom: -20px;
+		}
+
+		.giveaway-steps .round {
+			margin-right: 0px !important;
+			margin-bottom: 0px !important; 
+		}
+
+		.giveaway-steps .step h3 {
+			margin-top: 0px !important;
+		}
+
+		.column.step {
+			padding: 1rem .75rem 0.75rem 0.75rem;
+		}
 
 	}
 	
