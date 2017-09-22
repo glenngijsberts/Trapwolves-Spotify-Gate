@@ -45,9 +45,6 @@
 			  	<div class="step-1 top20" v-if="step_one">
 			  		<button class="button is-spotify" v-show="!authorized" @click="getAuth()">Login to Spotify to Follow us <i class="fa fa-spotify"></i></button>
 			  		<p class="help-text" v-show="!authorized">You have to follow the TrapWolves playlist in order to enter the giveaway</p>
-
-<!-- 			  		<button class="button is-spotify" v-show="authorized" @click="follow()">Follow playlist <i class="fa fa-spotify"></i></button> -->
-			  		
 			  	</div>
 
 			  	<div class="step-2 top20" v-if="step_two">
@@ -105,34 +102,42 @@ export default {
 	},
 data() {
 		return {
-
+			//Check for authorized
 			authorized: false,
 			display: false,
 
+			//Steps
 			active_one: true,
 			active_two: false,
 			active_three: false,
 
+			//accessToken from login spotify API
 			accessToken: '',
 
+			//List id from Spotify playlist
 			list: '71z8xZqacq06KVQ2Nir9H6',
+			//Owner of the playlist
 			owner: 'trapwolvesofficial',
+			//Check for following the playlist
 			follows: false,
 
+			//Client_id from spotify APP
 			client_id: '3f6be5c8306741c8ab06713da0a92f59',
+			//Redirect callback link
 			redirect: 'http://trapwolves.com/Giveaway/#/callback',
-			//redirect: 'http://localhost:8888/Trapwolves/Trapwolves/#/callback',
-			//redirect: 'http://localhost:8080/#/callback',
 
+			//Profile_id from spotify API response
 			profile_id: '',
 
+			//Managing which step you are one and which HTML will be showing
 			step_one: true,
 			step_two: false,
 			step_three: false,
 
+			//Name and Email for Firebase storing
 			name: '',
 			emailadress: '',
-
+			//Storing the data from firebase to check if the email is already entered
 			array: [],
 			checkEmail: ''
 
@@ -141,6 +146,7 @@ data() {
 
 	methods: {
 
+		//Login to spotify function
 		login(callback) {
 
 			let app = this;
@@ -177,6 +183,7 @@ data() {
         
     },
 
+    //
     getUserData(accessToken) {
     	let app = this;
     	axios({

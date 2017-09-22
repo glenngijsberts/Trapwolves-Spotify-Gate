@@ -1,9 +1,5 @@
-<template>
-	
-</template>
-
 <script>
-
+//Callback from Spotify
 (function() {
   var hash = {};
   window.location.hash.replace(/^#\/?/, '').split('&').forEach(function(kv) {
@@ -17,16 +13,9 @@
       type:'access_token',
       access_token: hash.access_token,
       expires_in: hash.expires_in || 0
-    }), 'http://trapwolves.com/Giveaway/#/');
-    //}), 'http://localhost:8888/Trapwolves/Trapwolves/#/');
-    //}), 'http://localhost:8080/#/');
+    }), 'http://trapwolves.com/Giveaway/#/'); //Link to application
     window.close();
     }
 })();
 
 </script>
-
-<style lang="scss" scoped>
-
-	
-</style>
