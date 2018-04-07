@@ -2,45 +2,27 @@
 
 	<div>
 
-		<section class="hero welcome">
-		  <div class="hero-body">
-		    <div class="container">
-				<img src="../img/logo_trapwolves.png" class="image image-logo" href="TrapWolves">
-
-		      <h1 class="title">
-		        Trapwolves Giveaway
-		      </h1>
-		      <h2 class="subtitle">
-		        Enter to win a free t-shirt
-		      </h2>
-		    </div>
-		  </div>
-		</section>
-
-		  <section class="section shirts">
-		    <div class="container">
-				<img src="../img/Shirts.png" class="image image-shirts">
-
-				<img src="../img/Arrow.png" class="image image-arrow arrow-left">
-				<img src="../img/Arrow.png" class="image image-arrow arrow-right">
-		    </div>
-		  </section>
+		  <Header />
 
 		  <div class="giveaway-steps">
 
 			  <div class="container">
 			  	
-			  	<div class="columns col-steps is-mobile">
-			  		<div class="column step">
-			  			<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}"><span class="showSM"><br /></span>Follow</h3>
-			  		</div>
-			  		<div class="column step">
-			  			<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}"><span class="showSM"><br /></span>Information</h3>
-			  		</div>
-			  		<div class="column step">
-			  			<div class="round round-3" :class="{active : active_three}">3</div> <h3 :class="{active : active_three}"><span class="showSM"><br /></span>Complete</h3>
-			  		</div>
-			  	</div>
+				<Steps>
+
+					<div class="column step">
+						<div class="round round-1" :class="{active : active_one}"><span class="round-1-1">1</span></div> <h3 :class="{active : active_one}"><span class="showSM"><br /></span>Follow</h3>
+					</div>
+
+					<div class="column step">
+						<div class="round round-2" :class="{active : active_two}">2</div> <h3 :class="{active : active_two}"><span class="showSM"><br /></span>Information</h3>
+					</div>
+
+					<div class="column step">
+						<div class="round round-3" :class="{active : active_three}">3</div> <h3 :class="{active : active_three}"><span class="showSM"><br /></span>Complete</h3>
+					</div>
+
+				</Steps>
 
 			  	<div class="step-1 top20" v-if="step_one">
 			  		<button class="button is-spotify" v-show="!authorized" @click="getAuth()">Login to Spotify to Follow us <i class="fa fa-spotify"></i></button>
@@ -64,18 +46,10 @@
 
 			  		<button class="button is-spotify" @click="checkForm()">Complete</button>
 			  		<p class="help-text">*Winner will be announched by Email!</p>
+
 			  	</div>
 
-			  	<div class="step-3 top20" v-if="step_three">
-			  		<p class="help-text">Thankyou for entering this giveaway!</p>
-			  		<p class="sub-text">The winner will be anounched by e-mail on 22-09-2017</p>
-
-			  		<div class="social-icons">
-			  			<a href="https://www.facebook.com/TrapWolves/" title="Facebook Trapwolves"><i class="fa fa-facebook-official"></i></a>
-			  			<a href="https://soundcloud.com/trapwolves" title="Soundcloud Trapwolves"><i class="fa fa-soundcloud"></i></a>
-			  			<a href="https://www.instagram.com/trapwolves/" title="Instagram Trapwolves"><i class="fa fa-instagram"></i></a>
-			  		</div>
-			  	</div>
+				<StepThree v-if="step_three" />
 				
 			  </div>
 
@@ -92,52 +66,69 @@
 
 <script>
 
+// Import dependencies
 import axios from 'axios'
 import firebase from 'firebase'
-import config from './../firebase.js' //firebase auth settings
+
+// Import config 
+import { FirebaseConfig, SpotifyConfig} from '../config.js' //firebase auth settings
+
+// Custom components
+import Header from './Header.vue'
+import Steps from './Steps.vue'
+
+import StepThree from './Steps/StepThree.vue'
+
 
 export default {
+
 	name: 'Welcome',
 	components: {
+		Header,
+		Steps,
+		StepThree
 	},
-data() {
+
+	data() {
 		return {
-			//Check for authorized
+
+			// Check for authorized
 			authorized: false,
 			display: false,
 
-			//Steps
+			// Steps
 			active_one: true,
 			active_two: false,
 			active_three: false,
 
-			//accessToken from login spotify API
+			// accessToken from login spotify API
 			accessToken: '',
 
-			//List id from Spotify playlist
+			// List id from Spotify playlist
 			list: '71z8xZqacq06KVQ2Nir9H6',
-			//Owner of the playlist
+			// Owner of the playlist
 			owner: 'trapwolvesofficial',
-			//Check for following the playlist
+			// Check for following the playlist
 			follows: false,
 
-			//Client_id from spotify APP
-			client_id: '3f6be5c8306741c8ab06713da0a92f59',
-			//Redirect callback link
-			redirect: 'http://trapwolves.com/Giveaway/#/callback',
+			// Client_id from spotify APP
+			client_id: SpotifyConfig.client_id,
+			// Redirect callback link
+			redirect: SpotifyConfig.redirect,
 
-			//Profile_id from spotify API response
+			// Profile_id from spotify API response
 			profile_id: '',
 
-			//Managing which step you are one and which HTML will be showing
+			// Managing which step you are one and which HTML will be showing
 			step_one: true,
 			step_two: false,
 			step_three: false,
 
-			//Name and Email for Firebase storing
+			// Name and Email for Firebase storing
 			name: '',
 			emailadress: '',
-			//Storing the data from firebase to check if the email is already entered
+
+			// Storing the data from firebase to check if the email is already entered
 			array: [],
 			checkEmail: ''
 
@@ -149,16 +140,16 @@ data() {
 		//Login to spotify function
 		login(callback) {
 
-			let app = this;
+			// Set variables
+			const client = this.client_id;
+			const redirect = this.redirect;
 
-	        function getLoginURL(scopes) {
-	            return 'https://accounts.spotify.com/authorize?client_id=' + app.client_id +
-	              '&redirect_uri=' + encodeURIComponent(app.redirect) +
-	              '&scope=' + encodeURIComponent(scopes.join(' ')) +
-	              '&response_type=token';
+			function getLoginURL(scopes) {
+	            return `https://accounts.spotify.com/authorize?client_id=${client}&redirect_uri=${encodeURIComponent(redirect)}&scope=${encodeURIComponent(scopes.join(' '))}&response_type=token`;
 	        }
-	        
-	        let url = getLoginURL([
+
+			// Permission scopes
+	        const url = getLoginURL([
 	        	'user-follow-read',
 	            'user-read-private',
 	            'user-follow-modify',
@@ -166,60 +157,62 @@ data() {
 	            'playlist-modify-public',
 	            'playlist-modify-private'
 	        ]);
-        
-          var width = 450,
-              height = 730,
-              left = (screen.width / 2) - (width / 2),
-              top = (screen.height / 2) - (height / 2);
 
-          window.addEventListener("message", function(event) {
-              var hash = JSON.parse(event.data);
-              if (hash.type == 'access_token') {
-                  callback(hash.access_token);
-              }
-          }, false);
+			// Define the popup window
+          	const 	width = 450,
+            		height = 750,
+              		left = (screen.width / 2) - (width / 2),
+              		top = (screen.height / 2) - (height / 2);
 
-          var w = window.open(url, 'Spotify', 'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
+			
+			window.addEventListener("message", (event) => {
+				var hash = JSON.parse(event.data);
+				hash.type == 'access_token' ? callback(hash.access_token) : null;
+			}, false);
+
+          	var w = window.open(url, 'Spotify', `menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=${width}, height=${height}, top=${top}, left=${left}`);
         
     },
 
-    //
     getUserData(accessToken) {
-    	let app = this;
+
     	axios({
     		method: 'get',
     		url: 'https://api.spotify.com/v1/me',
     		headers: {
-               'Authorization': 'Bearer ' + accessToken
+               'Authorization': `Bearer ${accessToken}`
             }
-    	}).then(function(response) {
-    		app.profile_id = response.data.id;
-    		app.followsPlaylist();
-    	})
+    	}).then((response) => {
+    		this.profile_id = response.data.id;
+    		this.followsPlaylist();
+		})
+		
     },
 
    followsPlaylist() {
     	
-    	let app = this;
+		let owner = this.owner;
+		let list = this.list;
+		let profile = this.profile_id;
+		let token = this.accessToken;
 
     	axios({
     		method: 'get',
-    		url: 'https://api.spotify.com/v1/users/'+app.owner+'/playlists/'+app.list+'/followers/contains?ids='+app.profile_id,
+    		url: `https://api.spotify.com/v1/users/${owner}/playlists/${list}/followers/contains?ids=${profile}`,
     		headers: {
-    			'Authorization': 'Bearer ' + app.accessToken
+    			'Authorization': `Bearer ${token}`
     		}
-
-    	}).then(function(response) {
+    	}).then((response) => {
 
     		if(response.data["0"] == true) {
-    			app.follows = true;
-    			app.step_one = false;
-    			app.active_one = false;
+    			this.follows = true;
+    			this.step_one = false;
+    			this.active_one = false;
 
-    			app.active_two = true;
-    			app.step_two = true;
+    			this.active_two = true;
+    			this.step_two = true;
     		} else {
-    			app.follow();
+    			this.follow();
     		}
 
     	}) // end of then first response
@@ -227,92 +220,89 @@ data() {
     },
 
     follow() {
-    	let app = this;
+
+		let owner = this.owner;
+		let list = this.list;
+		let profile = this.profile_id;
+		let token = this.accessToken;
+
     	axios({
 			method: 'put',
-			url: 'https://api.spotify.com/v1/users/'+app.owner+'/playlists/'+app.list+'/followers',
-				headers: {
-				    'Authorization': 'Bearer ' + app.accessToken,
-				    'Content-Type': 'application/json'
-				    }
-					}).then(function(response) {	
-		    			app.follows = true;
-		    			app.step_one = false;
-		    			app.active_one = false;
+			url: `https://api.spotify.com/v1/users/${owner}/playlists/${list}/followers`,
+			headers: {
+				'Authorization': `Bearer ${token}`,
+				'Content-Type': 'application/json'
+			}
+			}).then((response) => {	
+		    	this.follows = true;
+		    	this.step_one = false;
+		    	this.active_one = false;
 
-		    			app.step_two = true;
-		    			app.active_two = true;
-				   })    	
+		    	this.step_two = true;
+		    	this.active_two = true;
+			})    	
     },
 
     getAuth() {
-    		let app = this;
 
-    	    this.login(function(accessToken) {
-          		app.accessToken = accessToken;
-          		app.authorized = true;
-          		app.display = true;
-          		app.getUserData(accessToken);
-            });
+    	this.login((accessToken) => {
+          	this.accessToken = accessToken;
+          	this.authorized = true;
+          	this.display = true;
+          	this.getUserData(accessToken);
+         });
     },
 
     checkForm() {
 
-    		let app = this;
+		this.name == '' || this.emailadress == '' ? alert('You have to fill out the form') : this.getFirebase();
 
-    		if (this.name == '' || this.emailadress == '') {
-    			alert('You have to fill out the form');
-    		} else {
-
-    			app.getFirebase();
-
-    		}
     },
 
     getFirebase() {
 
     		let app = this;
 
-    	    var ref = firebase.database().ref().child('/aanmeldingen/');
-		    ref.once('value', function(snapshot) {
+			var ref = firebase.database().ref().child('/aanmeldingen/');
+			
+		    ref.once('value', (snapshot) => {
 
-		        snapshot.forEach(function(childSnapshot) {
-		           app.checkEmail = childSnapshot.val().email;
-		           app.array.push(app.checkEmail);
+		        snapshot.forEach((childSnapshot) => {
+		           this.checkEmail = childSnapshot.val().email;
+		           this.array.push(this.checkEmail);
 		        });
 
-		        	const res = app.array.includes(app.emailadress);
+		        const res = this.array.includes(this.emailadress);
 
-		          if(res) {
-		            alert('You already have entered the giveaway');
-		          } else if (res == false) {
-
-		          	app.store();
-
-		          }
+		        if(res) {
+		        	alert('You already have entered the giveaway');
+		        } else if (res == false) {
+		        	app.store();
+				}
+				
 		    });
     },
 
     store() {
-    			    this.step_two = false;
-	    			this.active_two = false;
+    	this.step_two = false;
+	    this.active_two = false;
 
-	    			this.active_three = true;
-	    			this.step_three = true;
+	    this.active_three = true;
+		this.step_three = true;
 
-	    			let app = this;
-
-		            firebase.database().ref('/aanmeldingen/').push({
-		            username: app.name,
-		            email: app.emailadress,
-		          	});
+		let app = this;
+		
+		firebase.database().ref('/aanmeldingen/').push({
+		    username: app.name,
+		    email: app.emailadress,
+		});
     }
 
 	} // end of methods
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 
 html {

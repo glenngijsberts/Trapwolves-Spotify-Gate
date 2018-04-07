@@ -5,5 +5,17 @@ Source code from a project for the youtube channel Trapwolves including the Spot
 ## Changes for the future
 
 * More structure in the application
-* Cleaner code
 * Seperate components
+* Create a generic component for the Spotify API
+
+## How to use
+
+```
+
+npm install
+Fill in your own config for Firebase and Spotify
+Change _config to config.js
+npm run dev
+
+```
+
